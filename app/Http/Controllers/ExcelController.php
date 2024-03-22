@@ -10,7 +10,7 @@ class ExcelController extends Controller
 {
     public function reading(Request $request)
     {
-//        $emailsArr[] = new FollowerController();
+
         $file = $request ->file('file');
         $reader = new Csv();
         $spreadsheet = IOFactory::load($file);
@@ -28,9 +28,9 @@ class ExcelController extends Controller
                 "source" => 75542,
                 "not_doi" => 1
             ];
-//            var_dump($emailsArr);
+
         }
-//var_dump($emailsArr);
+
         $url = 'https://mailganer.com/api/v2/emails/';
 
         $headers = [
@@ -39,7 +39,7 @@ class ExcelController extends Controller
         ];
 
         $data_json = json_encode($emailsArr, JSON_UNESCAPED_UNICODE);
-//        var_dump($data_json);
+
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
@@ -48,7 +48,5 @@ class ExcelController extends Controller
         curl_setopt($curl, CURLOPT_URL, $url);
         curl_setopt($curl, CURLOPT_POST, true);
         $response = curl_exec($curl);
-
-        var_dump($response);
     }
 }

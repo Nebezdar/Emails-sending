@@ -21,4 +21,3 @@ Route::get('/', function () {
 });
 
 Route::post('/reading', [ExcelController::class, 'reading']);
-//Route::get('/append', [FollowerController::class, 'append']) ;

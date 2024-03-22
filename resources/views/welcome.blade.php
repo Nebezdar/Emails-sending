@@ -9,13 +9,24 @@
 </head>
 <body>
 
+<hr>
 <form action="/reading" method="post" enctype="multipart/form-data">
     @csrf
     <input type="file" name="file" />
     <button type="submit">Загрузить файл</button>
 
 </form>
-
+<hr>
+<p>
+    Данный сервис позволяет загрузить емейлы в список рассылки Мейлганер
+</p>
+<p>
+    Для того, чтобы все заработало, необходимо загрузить файл формата .CSV, у которго в столбце А будет список емейлов
+</p>
+<img src="{{ asset('/emails.png') }}">
+<p>
+    После загрузки файла, произойдет недолгая обработка, затем емейлы добавятся в список
+</p>
 
 </body>
 </html>
