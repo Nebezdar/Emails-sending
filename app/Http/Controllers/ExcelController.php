@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
 use Illuminate\Http\Request;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Reader\Csv;
 
 class ExcelController extends Controller
 {
-    public function reading(Request $request)
+    public function reading(Request $request): void
     {
 
         $file = $request ->file('file');
@@ -22,20 +23,25 @@ class ExcelController extends Controller
             $emails[] = $sheet->getCell('A' . $row)->getValue();
         }
 
-        foreach ($emails as $email) {
-            $emailsArr[] = [
-                "email" => $email,
-                "source" => 75542,
-                "not_doi" => 1
-            ];
-
+        $emailsArr = [];
+        foreach ($emails as $emailString) {
+            $emailList = preg_split('/\s+/', trim($emailString));
+            foreach ($emailList as $email) {
+                if (!empty($email)) {
+                    $emailsArr[] = [
+                        "email" => $email,
+                        "source" => 75542,
+                        "not_doi" => 1
+                    ];
+                }
+            }
         }
 
         $url = 'https://mailganer.com/api/v2/emails/';
 
         $headers = [
             'Content-Type: application/json',
-            'Authorization:CodeRequest 4e255e71d5efaf49ccd65f8d55b709a9'
+            'Authorization: CodeRequest 4e255e71d5efaf49ccd65f8d55b709a9'
         ];
 
         $data_json = json_encode($emailsArr, JSON_UNESCAPED_UNICODE);
@@ -48,5 +54,11 @@ class ExcelController extends Controller
         curl_setopt($curl, CURLOPT_URL, $url);
         curl_setopt($curl, CURLOPT_POST, true);
         $response = curl_exec($curl);
+
+
+
+        curl_close($curl);
+
+
     }
 }
